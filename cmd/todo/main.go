@@ -27,7 +27,7 @@ func main() {
 		item := strings.Join(os.Args[1:], " ")
 		l.Add(item)
 		if err := l.Save(todoFileName); err != nil {
-			fmt.Frpntln(os.Stderr, err)
+			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
 		}
 	}
