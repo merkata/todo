@@ -16,7 +16,7 @@ func main() {
 	if _, err := os.Stat(todoFileName); os.IsNotExist(err) {
 		f, err := os.Create(todoFileName)
 		if err != nil {
-			return err
+			os.Exit(1)
 		}
 		f.Close()
 	}
