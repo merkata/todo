@@ -13,6 +13,14 @@ const todoFileName = ".todo.json"
 func main() {
 	l := &todo.List{}
 
+	if _, err := os.Stat(todoFileName); os.IsNotExist(err) {
+		f, err := os.Create(todoFileName)
+		if err != nil {
+			return err
+		}
+		f.Close()
+	}
+
 	if err := l.Get(todoFileName); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
