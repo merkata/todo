@@ -1,9 +1,9 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
-	"strings"
 
 	"github.com/merkata/todo"
 )
@@ -11,6 +11,12 @@ import (
 const todoFileName = ".todo.json"
 
 func main() {
+	listItems := flag.Bool("list", false, "list items")
+	addItem := flag.String("add", "", "item to be included in the to-do")
+	completeItem := flag.Int("complete", 0, "complete an item off the list")
+
+	flag.Parse()
+
 	l := &todo.List{}
 
 	if _, err := os.Stat(todoFileName); os.IsNotExist(err) {
@@ -27,17 +33,24 @@ func main() {
 	}
 
 	switch {
-	case len(os.Args) == 1:
+	case *listItems:
 		for _, item := range *l {
 			fmt.Println(item.Task)
 		}
-	default:
-		item := strings.Join(os.Args[1:], " ")
-		l.Add(item)
+	case *addItem != "":
+		l.Add(*addItem)
 		if err := l.Save(todoFileName); err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
 		}
+	case *completeItem > 0:
+		l.Complete(*completeItem)
+		if err := l.Save(todoFileName); err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+	default:
+		fmt.Println("invalid option specified")
+		os.Exit(1)
 	}
-
 }
