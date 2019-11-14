@@ -8,7 +8,7 @@ import (
 	"github.com/merkata/todo"
 )
 
-const todoFileName = ".todo.json"
+var todoFileName = ".todo.json"
 
 func main() {
 	listItems := flag.Bool("list", false, "list items")
@@ -16,6 +16,10 @@ func main() {
 	completeItem := flag.Int("complete", 0, "complete an item off the list")
 
 	flag.Parse()
+
+	if envFile := os.Getenv("TODO_CONFIG"); envFile != "" {
+		todoFileName = envFile
+	}
 
 	l := &todo.List{}
 
