@@ -4,6 +4,7 @@ default:
 stages:
   - build
   - test
+  - coverage
   - deploy
 
 build:
@@ -14,7 +15,12 @@ build:
 test:
   stage: test
   script:
-    - go test -race -v ./... -cover
+    - go test -race -v ./... -coverprofile=coverage.txt -covermode=atomic
+
+coverage:
+    stage: coverage
+    script:
+      - bash <(curl -s https://codecov.io/bash)
     
 deploy:
   stage: deploy
