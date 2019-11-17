@@ -21,7 +21,8 @@ test:
 coverage:
     stage: test
     script:
-      - bash <(curl -s https://codecov.io/bash)
+      - ls -l
+      - PWD=${CI_PROJECT_DIR} bash <(curl -s https://codecov.io/bash)
     
 deploy:
   stage: deploy
