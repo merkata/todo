@@ -4,11 +4,12 @@ default:
 stages:
   - build
   - test
-  - coverage
   - deploy
 
 build:
   stage: build
+  artifacts:
+      untracked: true
   script:
     - go build
     
@@ -18,12 +19,14 @@ test:
     - go test -race -v ./... -coverprofile=coverage.txt -covermode=atomic
 
 coverage:
-    stage: coverage
+    stage: test
     script:
       - bash <(curl -s https://codecov.io/bash)
     
 deploy:
   stage: deploy
+  dependencies:
+    - build
   only:
     - tags
   script:
