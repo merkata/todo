@@ -17,12 +17,8 @@ test:
   stage: test
   script:
     - go test -race -v ./... -coverprofile=coverage.txt -covermode=atomic
-
-coverage:
-    stage: test
-    script:
-      - ls -l
-      - PWD=${CI_PROJECT_DIR} bash <(curl -s https://codecov.io/bash)
+    - ls -l
+    - PWD=${CI_PROJECT_DIR} bash <(curl -s https://codecov.io/bash)
     
 deploy:
   stage: deploy
